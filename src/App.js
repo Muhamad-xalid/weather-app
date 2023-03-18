@@ -26,6 +26,7 @@ function App() {
       useEffect(()=>{
         axios.get(`https://api.openweathermap.org/data/2.5/weather?q=Erbil&units=metric&appid=de219e1e9b79346bdf33d5f1cde004f9`).then((response)=>{
           setdata(response.data)
+          console.log(data);
       })
       },[])
 
@@ -47,13 +48,18 @@ function App() {
               })} 
             </select>
            
+           {data &&
             <div  className='text-white'>
                 <p className='text-2xl mb-5 text-left'>{data.name}</p>
-              <div className='flex items-end'>
-                {data.main ? <h1 className='text-5xl font-bold mr-4'>{data.main.temp} °C</h1> : null}
-                {data.main ?<p className='text-white font-bold text-2xl'>{data.weather[0].main}</p> :null}
+              <div className='flex'>
+                {data.main && <h1 className='text-5xl font-bold mr-4'>{data.main.temp} °C</h1> }
+                <div className='flex items-end ml-3'>
+                  {data.weather[0] && <p className='text-white font-bold text-2xl'>{data.weather[0].main}</p>}
+                  {data.weather[0] && <img src={`http://openweathermap.org/img/w/${data.weather[0].icon}.png`}/>}
+                </div>
               </div>
             </div>
+            }
 
           {data.name !== undefined &&
               <div className='bg-[rgba(121,123,126,0.3)] text-white font-bold flex justify-between px-5 py-1 rounded-lg '>
