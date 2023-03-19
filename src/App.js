@@ -1,7 +1,8 @@
 import './App.css';
 import axios from 'axios'
 import { useEffect, useState } from 'react';
-
+import Datetime from 'react-datetime';
+import "react-datetime/css/react-datetime.css";
 function App() {
 
   const Cities =[
@@ -17,18 +18,14 @@ function App() {
     {name:'Jamjamāl'},
     {name:'Samarra'},
     {name:'Baghdad'},
-    {name:'Miami'},
-    {name:'Dallas'},
-    {name:'New york'},
   ]     
 
       const [data,setdata]=useState('')
       useEffect(()=>{
         axios.get(`https://api.openweathermap.org/data/2.5/weather?q=Erbil&units=metric&appid=de219e1e9b79346bdf33d5f1cde004f9`).then((response)=>{
           setdata(response.data)
-          console.log(data);
       })
-      },[])
+      },[data])
 
       const handleChange = (event) => {
       const cityname = event.target.value
@@ -37,8 +34,8 @@ function App() {
           setdata(response.data)
           console.log(data);
       })
+      console.log(new Date(data.dt*1000)); // minus
 };
-
   return (
     <div className="App px-5 py-10 flex flex-col justify-between">
       
@@ -50,12 +47,16 @@ function App() {
            
            {data &&
             <div  className='text-white'>
-                <p className='text-2xl mb-5 text-left'>{data.name}</p>
-              <div className='flex'>
+              <div className='flex mb-5 items-center'>
+                <p className='text-2xl  mr-3'>{data.name}</p>
+                <Datetime value={data.dt*1000} inputProps={{className:'outline-0 bg-[rgba(121,123,126,0.3)]  ease-in-out duration-300 hover:bg-[rgba(121,123,126,0.5)] text-white rounded-lg py-1 px-2'}} className='text-black '/>
+              </div>
+
+              <div className='flex flex-col text-left'>
                 {data.main && <h1 className='text-5xl font-bold mr-4'>{data.main.temp} °C</h1> }
-                <div className='flex items-end ml-3'>
+                <div className='flex items-end mt-3'>
                   {data.weather[0] && <p className='text-white font-bold text-2xl'>{data.weather[0].main}</p>}
-                  {data.weather[0] && <img src={`http://openweathermap.org/img/w/${data.weather[0].icon}.png`}/>}
+                  {data.weather[0] && <img alt='icon' src={`http://openweathermap.org/img/w/${data.weather[0].icon}.png`}/>}
                 </div>
               </div>
             </div>
@@ -80,5 +81,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
