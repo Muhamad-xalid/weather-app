@@ -25,7 +25,7 @@ function App() {
         axios.get(`https://api.openweathermap.org/data/2.5/weather?q=Erbil&units=metric&appid=de219e1e9b79346bdf33d5f1cde004f9`).then((response)=>{
           setdata(response.data)
       })
-      },[data])
+      },[])
 
       const handleChange = (event) => {
       const cityname = event.target.value
@@ -34,7 +34,6 @@ function App() {
           setdata(response.data)
           console.log(data);
       })
-      console.log(new Date(data.dt*1000)); // minus
 };
   return (
     <div className="App px-5 py-10 flex flex-col justify-between">
